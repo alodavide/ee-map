@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../lib-d3/lib-d3.html">
 
 <!--
 `ee-map`
@@ -62,7 +63,7 @@ Map for EpitopeExtractor
 
       properties: {
         dataResponse: {
-          type: object,
+          type: Object,
           value: 'ee-map',
           reflectToAttribute: true,
           observer: 'createOctopus'
@@ -70,21 +71,17 @@ Map for EpitopeExtractor
       },
 
 
-      createOctopus: function (dataEntries){
+      createOctopus: function (data){
 
         var map = this.$.map;
         map.innerHTML = '';
 
-        if(responseData === undefined || responseData === '' || responseData.length === 0){
+        if(data === undefined || data === '' || data.length === 0){
           return;
         }
         // Way to force polymer to apply style to D3 svg.
 
         var that = this;
-
-
-        var data = [[120, ["like", "call response", "dramatic intro", "has breaks",
-
 
 
         // transform the data into a useful representation
@@ -160,7 +157,7 @@ Map for EpitopeExtractor
             data.outer[i1++] = outer[i];
         }
 
-
+        this.scopeSubtree(this.$.map, true);
         // from d3 colorbrewer:
         // This product includes color specifications and designs developed by Cynthia Brewer (http://colorbrewer.org/).
         var colors = ["#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"]
@@ -176,31 +173,29 @@ Map for EpitopeExtractor
         var link_width = "1px";
 
         var il = data.inner.length;
+        var ol = data.outer.length;
 
         var inner_y = d3.scale.linear()
             .domain([0, il])
             .range([-(il * rect_height)/2, (il * rect_height)/2]);
 
-        var mid = data.outerLeft.length;
+        mid = (data.outer.length/2.0)
         var outer_x = d3.scale.linear()
-            .domain([0, mid, mid, data.outerRight.length+data.outerLeft.length])
+            .domain([0, mid, mid, data.outer.length])
             .range([15, 170, 190 ,355]);
 
+        var outer_y = d3.scale.linear()
+            .domain([0, data.outer.length])
+            .range([0, diameter / 2 - 120]);
 
-        // setup positioning
-        data.outerLeft = data.outerLeft.map(function(d, i) {
+
+
+        data.outer = data.outer.map(function(d, i) {
           d.x = outer_x(i);
           d.y = diameter/3;
           return d;
         });
 
-        data.outerRight = data.outerRight.map(function(d, i) {
-          d.x = outer_x(i+data.outerLeft.length);
-          d.y = diameter/3;
-          return d;
-        });
-
-        data.outer = data.outerLeft.concat(data.outerRight);
         data.inner = data.inner.map(function(d, i) {
           d.x = -(rect_width / 2);
           d.y = inner_y(i);
