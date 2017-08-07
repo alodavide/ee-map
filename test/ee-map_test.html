@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>ee-map test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../ee-map.html">
+  </head>
+  <body>
+    <test-fixture id="basic">
+      <template>
+        <ee-map></ee-map>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('ee-map', function() {
+        test('instantiating the element works', function() {
+          var element = fixture('basic');
+          assert.equal(element.is, 'ee-map');
+        });
+      });
+    </script>
+  </body>
+</html>
