@@ -72,6 +72,9 @@ Map for EpitopeExtractor
 
       createOctopus: function (data){
 
+        var glyconnectServer = 'http://129.194.71.205/glycan/';
+        var glydin = 'http://129.194.71.205/epitopes/index.html?epitope=';
+
         var map = this.$.map;
         map.innerHTML = '';
 
@@ -254,14 +257,7 @@ Map for EpitopeExtractor
             .on("mouseover", this.mouseover)
             .on("mouseout", this.mouseout)
             .on("click", function(e){
-              if(e.name.indexOf("P") != -1){
-                that.pageType= "protein";
-                that.proteinId = e.name.substring(1);
-              }
-              if(e.name.indexOf("S") != -1){
-                that.pageType = 'glycan';
-                that.structureId = e.name.substring(1);
-              }
+              window.open(glyconnectServer+e.name.replace('glyconnect_',''),'_blank');
             });
 
         onode.append("circle")
@@ -287,7 +283,10 @@ Map for EpitopeExtractor
             .attr("class", "inner_node")
             .attr("transform", function(d, i) { return "translate(" + d.x + "," + d.y + ")"})
             .on("mouseover", this.mouseover)
-            .on("mouseout", this.mouseout);
+            .on("mouseout", this.mouseout)
+            .on("click", function(e){
+              window.open(glydin+e.name.replace('ep_',''),'_blank');
+            });
 
         inode.append('rect')
             .attr('width', rect_width)
