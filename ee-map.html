@@ -66,14 +66,26 @@ Map for EpitopeExtractor
           type: Object,
           reflectToAttribute: true,
           observer: 'createOctopus'
+        },
+
+        glyconnectServer:{
+          type: String,
+          reflectToAttribute: true,
+          value: 'https://glyconnect.expasy.org'
+        },
+
+        glydinLocation:{
+          type: String,
+          reflectToAttribute: true,
+          value: 'https://glycoproteome.expasy.org/epitopes/'
         }
       },
 
 
       createOctopus: function (data){
 
-        var glyconnectServer = 'http://129.194.71.205/glycan/';
-        var glydin = 'http://129.194.71.205/epitopes/index.html?epitope=';
+        var glyconnectServer = this.glyconnectServer+'/glycan/';
+        var glydin = this.glydinLocation+'index.html?epitope=';
 
         var map = this.$.map;
         map.innerHTML = '';
@@ -105,6 +117,13 @@ Map for EpitopeExtractor
 
           if (d == null)
             return;
+
+          //Warning!!!
+          d.id =  d.id.replace("ep_","");
+          d.id = parseInt(d.id) - 1;
+          d.id = "ep_"+d.id;
+          //The Id are going to be changed (id-1) to fit glydin!
+          //This MUST BE REMOVED!!!!!!!
 
           var i = { id: 'i' + inner.length, name: d.id, related_links: [] };
           i.related_nodes = [i.id];
