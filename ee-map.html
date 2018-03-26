@@ -82,7 +82,7 @@ Map for EpitopeExtractor
       },
 
 
-      createOctopus: function (data){
+      createOctopus: function(response){
 
         var glyconnectServer = this.glyconnectServer+'/glycan/';
         var glydin = this.glydinLocation+'index.html?epitope=';
@@ -96,7 +96,8 @@ Map for EpitopeExtractor
         // Way to force polymer to apply style to D3 svg.
 
         var that = this;
-
+        //Clone data from ajaxCall
+        var data = response.slice();
 
         // transform the data into a useful representation
         // 1 is inner, 2, is outer
